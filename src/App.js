@@ -5,6 +5,11 @@ import { Navbar } from "./Navbar";
 import { Movie } from "./Movie";
 import * as React from 'react';
 import { Playground } from "./Playground";
+import {
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 
 
 // Definition of App
@@ -73,49 +78,26 @@ export default function App() {
     }
   ]);
 
-  const [name, setName] = useState("");
-  const [poster, setPoster] = useState("");
-  const [rating, setRating] = useState("");
 
   return (
     <div className="App">
       <Navbar />
-      <div className="add-movie">
-        <input
-          onChange={(event) => setName(event.target.value)}
-          placeholder="Enter Movie Name"
-        />
-        <input
-          onChange={(event) => setPoster(event.target.value)}
-          placeholder="Enter Img Url"
-        />
-        <input
-          onChange={(event) => setRating(event.target.value)}
-          placeholder="Enter Movie Ratings"
-        />
-        <br />
-        <button
-          className="add-btn"
-          onClick={() => {
-            const newMovie = {
-              name: name,
-              poster: poster,
-              rating: rating
-            };
-            console.log(newMovie);
-            setMovieList([...movieList, newMovie]);
-          }}
-        >
-          Add-Movie
-        </button>
-      </div>
       <div className="tablets">
-      <Button variant="text">Movies</Button>
+      <Button variant="text"><Link to="/addmovies">Add-Movies</Link></Button>
+      <Button variant="text"><Link to="/about">About-us</Link></Button>
       <Button variant="text">Trailers</Button>
       <Button variant="text">Tv-shows</Button>
       <Button variant="text">Coming soon...</Button>
         <Playground/>
       </div>
+      <Switch>
+      <Route path="/addmovies">
+      <AddMovies movieList={movieList} setMovieList={setMovieList}/>
+      </Route>
+      <Route path="/about">
+          <About />
+        </Route>
+      </Switch>
       <div className="movie-list">
         {movieList.map(({ name, poster, rating,summary },index) => (
           <Movie 
@@ -137,6 +119,60 @@ export default function App() {
            <Movie name={movie.name} poster={movie.poster} rating={movie.rating} />
         }} */}
       </div>
+    </div>
+  );
+}
+
+function AddMovies({movieList, setMovieList}){
+  const [name, setName] = useState("");
+  const [poster, setPoster] = useState("");
+  const [rating, setRating] = useState("");
+  return(
+  <div className="add-movie">
+        <input
+          onChange={(event) => setName(event.target.value)}
+          placeholder="Enter Movie Name"
+        />
+        <input
+          onChange={(event) => setPoster(event.target.value)}
+          placeholder="Enter Img Url"
+        />
+        <input
+          onChange={(event) => setRating(event.target.value)}
+          placeholder="Enter Movie Ratings"
+        />
+        <br />
+        <button
+          className="add-btn"
+          onClick={() => {
+            const newMovie = {
+              name: name,
+              poster: poster,
+              rating: rating
+            };
+            setMovieList([...movieList, newMovie]);
+          }}
+        >
+          Add-Movie
+        </button>
+      </div>
+      );
+
+}
+
+function About() {
+  return (
+    <div className="about">
+      <h2>About Us</h2>
+      <p >
+      Marvel Studios, LLC[4] (originally known as Marvel Films from 1993 to 1996) is an American film and television production company that is a subsidiary of Walt Disney Studios, a division of The Walt Disney Company. Marvel Studios is known for the production of the Marvel Cinematic Universe films, based on characters that appear in Marvel Comics publications.[5]
+
+Since 2008, Marvel Studios has released 27 films within the Marvel Cinematic Universe, from Iron Man (2008) to Spider-Man: No Way Home (2021), and five television series since 2021, from WandaVision (2021) to Hawkeye (2021). The television series What If...? (2021) is the studio's first animated property. These films and television series all share continuity with each other, along with the One-Shots produced by the studio. The television series produced by Marvel Television also acknowledge the continuity.
+
+In addition to the Marvel Cinematic Universe, Marvel Studios was also involved with the production of other Marvel-character film franchises that have exceeded $1 billion in North American box office revenue, including the X-Men and Spider-Man multi-film franchises.
+
+Marvel Studios is also producing television series airing on Disney+, and is overseeing production for remaining Marvel Television series following its folding into Marvel Studios.
+      </p>
     </div>
   );
 }
